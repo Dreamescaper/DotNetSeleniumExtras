@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if NETCOREAPP2_0
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Moq;
@@ -6,7 +8,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
 
-namespace SeleniumExtras.PageObjects.Tests
+namespace SeleniumExtras.PageObjects
 {
     public class WebElementListProxyTests
     {
@@ -77,3 +79,5 @@ namespace SeleniumExtras.PageObjects.Tests
         }
     }
 }
+
+#endif
