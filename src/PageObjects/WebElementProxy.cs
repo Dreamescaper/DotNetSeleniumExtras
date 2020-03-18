@@ -21,13 +21,14 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions.Internal;
+using OpenQA.Selenium.Internal;
 
 namespace SeleniumExtras.PageObjects
 {
     /// <summary>
     /// Intercepts the request to a single <see cref="IWebElement"/>
     /// </summary>
-    internal class WebElementProxy : WebDriverObjectProxy, IWrapsElement, IWebElement, ILocatable
+    internal class WebElementProxy : WebDriverObjectProxy, IWrapsElement, IWebElement, ILocatable, IFindsElement
     {
         private IWebElement? cachedElement;
 
@@ -95,6 +96,12 @@ namespace SeleniumExtras.PageObjects
         public override int GetHashCode() => WrappedElement.GetHashCode();
 
         public override bool Equals(object? obj) => WrappedElement.Equals(obj);
+
+        public IWebElement FindElement(string mechanism, string value)
+            => ((IFindsElement)WrappedElement).FindElement(mechanism, value);
+
+        public ReadOnlyCollection<IWebElement> FindElements(string mechanism, string value)
+            => ((IFindsElement)WrappedElement).FindElements(mechanism, value);
 
         #endregion Forwarded WrappedElement calls
     }

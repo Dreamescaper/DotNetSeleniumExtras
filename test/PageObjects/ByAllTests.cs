@@ -6,7 +6,7 @@ You may obtain a copy of the License at
 
      http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
+Unless required byAll applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
@@ -24,15 +24,18 @@ namespace SeleniumExtras.PageObjects
     [TestFixture]
     public class ByAllTests
     {
+        private readonly By by = By.Name("cheese");
+        private readonly By by2 = By.Name("photo");
+
         [Test]
         public void FindElementZeroBy()
         {
             var driver = new Mock<IAllDriver>();
 
-            var by = new ByAll();
+            var byAll = new ByAll();
 
-            Assert.Throws<NoSuchElementException>(() => by.FindElement(driver.Object));
-            Assert.That(by.FindElements(driver.Object), Is.EqualTo(new List<IWebElement>().AsReadOnly()));
+            Assert.Throws<NoSuchElementException>(() => byAll.FindElement(driver.Object));
+            Assert.That(byAll.FindElements(driver.Object), Is.EqualTo(new List<IWebElement>().AsReadOnly()));
         }
 
         [Test]
@@ -42,15 +45,15 @@ namespace SeleniumExtras.PageObjects
             var elem1 = new Mock<IAllElement>();
             var elem2 = new Mock<IAllElement>();
             var elems12 = new List<IWebElement> { elem1.Object, elem2.Object }.AsReadOnly();
-            driver.Setup(_ => _.FindElementsByName(It.Is<string>(x => x == "cheese"))).Returns(elems12);
-            var by = new ByAll(By.Name("cheese"));
+            driver.Setup(_ => _.FindElements(by.Mechanism, by.Criteria)).Returns(elems12);
+            var byAll = new ByAll(by);
 
             // findElement
-            Assert.AreEqual(by.FindElement(driver.Object), elem1.Object);
+            Assert.AreEqual(byAll.FindElement(driver.Object), elem1.Object);
             //findElements
-            Assert.That(by.FindElements(driver.Object), Is.EqualTo(elems12));
+            Assert.That(byAll.FindElements(driver.Object), Is.EqualTo(elems12));
 
-            driver.Verify(_ => _.FindElementsByName("cheese"), Times.AtLeastOnce);
+            driver.Verify(_ => _.FindElements(by.Mechanism, by.Criteria), Times.AtLeastOnce);
         }
 
         [Test]
@@ -59,15 +62,15 @@ namespace SeleniumExtras.PageObjects
             var driver = new Mock<IAllDriver>();
             var empty = new List<IWebElement>().AsReadOnly();
 
-            driver.Setup(_ => _.FindElementsByName(It.Is<string>(x => x == "cheese"))).Returns(empty);
+            driver.Setup(_ => _.FindElements(by.Mechanism, by.Criteria)).Returns(empty);
 
-            var by = new ByAll(By.Name("cheese"));
+            var byAll = new ByAll(by);
 
             // one element
-            Assert.Throws<NoSuchElementException>(() => by.FindElement(driver.Object));
-            Assert.That(by.FindElements(driver.Object), Is.EqualTo(empty));
+            Assert.Throws<NoSuchElementException>(() => byAll.FindElement(driver.Object));
+            Assert.That(byAll.FindElements(driver.Object), Is.EqualTo(empty));
 
-            driver.Verify(_ => _.FindElementsByName("cheese"), Times.AtLeastOnce);
+            driver.Verify(_ => _.FindElements(by.Mechanism, by.Criteria), Times.AtLeastOnce);
         }
 
         [Test]
@@ -81,21 +84,21 @@ namespace SeleniumExtras.PageObjects
             var elems12 = new List<IWebElement> { elem1.Object, elem2.Object }.AsReadOnly();
             var elems23 = new List<IWebElement> { elem2.Object, elem3.Object }.AsReadOnly();
 
-            driver.Setup(_ => _.FindElementsByName(It.Is<string>(x => x == "cheese"))).Returns(elems12);
-            driver.Setup(_ => _.FindElementsByName(It.Is<string>(x => x == "photo"))).Returns(elems23);
+            driver.Setup(_ => _.FindElements(by.Mechanism, by.Criteria)).Returns(elems12);
+            driver.Setup(_ => _.FindElements(by2.Mechanism, by2.Criteria)).Returns(elems23);
 
-            var by = new ByAll(By.Name("cheese"), By.Name("photo"));
+            var byAll = new ByAll(by, by2);
 
             // findElement
-            Assert.That(by.FindElement(driver.Object), Is.EqualTo(elem2.Object));
+            Assert.That(byAll.FindElement(driver.Object), Is.EqualTo(elem2.Object));
 
             //findElements
-            var result = by.FindElements(driver.Object);
+            var result = byAll.FindElements(driver.Object);
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result[0], Is.EqualTo(elem2.Object));
 
-            driver.Verify(_ => _.FindElementsByName("cheese"), Times.AtLeastOnce);
-            driver.Verify(_ => _.FindElementsByName("photo"), Times.AtLeastOnce);
+            driver.Verify(_ => _.FindElements(by.Mechanism, by.Criteria), Times.AtLeastOnce);
+            driver.Verify(_ => _.FindElements(by2.Mechanism, by2.Criteria), Times.AtLeastOnce);
         }
 
         [Test]
@@ -110,17 +113,17 @@ namespace SeleniumExtras.PageObjects
             var elems12 = new List<IWebElement> { elem1.Object, elem2.Object }.AsReadOnly();
             var elems34 = new List<IWebElement> { elem3.Object, elem4.Object }.AsReadOnly();
 
-            driver.Setup(_ => _.FindElementsByName(It.Is<string>(x => x == "cheese"))).Returns(elems12);
-            driver.Setup(_ => _.FindElementsByName(It.Is<string>(x => x == "photo"))).Returns(elems34);
+            driver.Setup(_ => _.FindElements(by.Mechanism, by.Criteria)).Returns(elems12);
+            driver.Setup(_ => _.FindElements(by2.Mechanism, by2.Criteria)).Returns(elems34);
 
-            var by = new ByAll(By.Name("cheese"), By.Name("photo"));
+            var byAll = new ByAll(by, by2);
 
-            Assert.Throws<NoSuchElementException>(() => by.FindElement(driver.Object));
+            Assert.Throws<NoSuchElementException>(() => byAll.FindElement(driver.Object));
 
-            var result = by.FindElements(driver.Object);
+            var result = byAll.FindElements(driver.Object);
             Assert.That(result.Count, Is.EqualTo(0));
-            driver.Verify(_ => _.FindElementsByName("cheese"), Times.AtLeastOnce);
-            driver.Verify(_ => _.FindElementsByName("photo"), Times.AtLeastOnce);
+            driver.Verify(_ => _.FindElements(by.Mechanism, by.Criteria), Times.AtLeastOnce);
+            driver.Verify(_ => _.FindElements(by2.Mechanism, by2.Criteria), Times.AtLeastOnce);
         }
 
     }

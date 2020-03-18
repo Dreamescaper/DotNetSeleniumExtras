@@ -18,12 +18,12 @@ using OpenQA.Selenium.Internal;
 
 namespace SeleniumExtras.PageObjects
 {
-    public interface IAllDriver : IFindsById, IFindsByLinkText, IFindsByName, IFindsByXPath, IWebDriver
+    public interface IAllDriver : IFindsElement, IWebDriver
     {
         // Place holder
     }
 
-    public interface IAllElement : IWebElement
+    public interface IAllElement : IFindsElement, IWebElement
     {
         // Place holder
     }
