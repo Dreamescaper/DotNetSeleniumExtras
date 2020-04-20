@@ -1,5 +1,8 @@
 ﻿using NUnit.Framework;
 
+// Tests are targeted specifically at equality 
+#pragma warning disable NUnit2010 // Use EqualConstraint.
+
 namespace SeleniumExtras.PageObjects
 {
     [TestFixture]
@@ -10,10 +13,10 @@ namespace SeleniumExtras.PageObjects
         {
             FindsByAttribute first = new FindsByAttribute() { How = How.Id, Using = "Test" };
             FindsByAttribute second = new FindsByAttribute() { How = How.Id, Using = "Test" };
-            Assert.IsTrue(first.Equals(second));
-            Assert.IsFalse(object.ReferenceEquals(first, second));
-            Assert.IsTrue(first == second);
-            Assert.IsFalse(first != second);
+            Assert.That(first.Equals(second), Is.True);
+            Assert.That(object.ReferenceEquals(first, second), Is.False);
+            Assert.That(first == second, Is.True);
+            Assert.That(first != second, Is.False);
         }
 
         [Test]
@@ -21,11 +24,11 @@ namespace SeleniumExtras.PageObjects
         {
             FindsByAttribute first = new FindsByAttribute() { How = How.Id, Using = "Test" };
             FindsByAttribute second = first;
-            Assert.IsTrue(first == second);
-            Assert.IsTrue(second == first);
-            Assert.IsTrue(first.Equals(second));
-            Assert.IsTrue(second.Equals(first));
-            Assert.IsTrue(object.ReferenceEquals(first, second));
+            Assert.That(first == second, Is.True);
+            Assert.That(second == first, Is.True);
+            Assert.That(first.Equals(second), Is.True);
+            Assert.That(second.Equals(first), Is.True);
+            Assert.That(object.ReferenceEquals(first, second), Is.True);
         }
 
         [Test]
@@ -33,9 +36,9 @@ namespace SeleniumExtras.PageObjects
         {
             FindsByAttribute first = new FindsByAttribute() { How = How.Id, Using = "Hello" };
             FindsByAttribute second = new FindsByAttribute() { How = How.Id, Using = "World" };
-            Assert.IsFalse(first.Equals(second));
-            Assert.IsFalse(first == second);
-            Assert.IsTrue(first != second);
+            Assert.That(first.Equals(second), Is.False);
+            Assert.That(first == second, Is.False);
+            Assert.That(first != second, Is.True);
         }
 
         [Test]
@@ -43,9 +46,9 @@ namespace SeleniumExtras.PageObjects
         {
             FindsByAttribute first = new FindsByAttribute() { How = How.Name, Using = "Test" };
             FindsByAttribute second = new FindsByAttribute() { How = How.Id, Using = "Test" };
-            Assert.IsFalse(first.Equals(second));
-            Assert.IsFalse(first == second);
-            Assert.IsTrue(first != second);
+            Assert.That(first.Equals(second), Is.False);
+            Assert.That(first == second, Is.False);
+            Assert.That(first != second, Is.True);
         }
 
         [Test]
@@ -53,9 +56,9 @@ namespace SeleniumExtras.PageObjects
         {
             FindsByAttribute first = new FindsByAttribute() { How = How.Id, Using = "Test", Priority = 1 };
             FindsByAttribute second = new FindsByAttribute() { How = How.Id, Using = "Test", Priority = 2 };
-            Assert.IsFalse(first.Equals(second));
-            Assert.IsFalse(first == second);
-            Assert.IsTrue(first != second);
+            Assert.That(first.Equals(second), Is.False);
+            Assert.That(first == second, Is.False);
+            Assert.That(first != second, Is.True);
         }
 
         [Test]
@@ -63,13 +66,13 @@ namespace SeleniumExtras.PageObjects
         {
             FindsByAttribute first = new FindsByAttribute() { How = How.Id, Using = "Test" };
             FindsByAttribute second = null;
-            Assert.IsFalse(first.Equals(second));
+            Assert.That(first.Equals(second), Is.False);
 
             // Must test order of arguments for overridden operators
-            Assert.IsFalse(first == second);
-            Assert.IsTrue(first != second);
-            Assert.IsFalse(second == first);
-            Assert.IsTrue(second != first);
+            Assert.That(first == second, Is.False);
+            Assert.That(first != second, Is.True);
+            Assert.That(second == first, Is.False);
+            Assert.That(second != first, Is.True);
         }
 
         [Test]
@@ -79,10 +82,10 @@ namespace SeleniumExtras.PageObjects
             FindsByAttribute second = null;
 
             // Must test order of arguments for overridden operators
-            Assert.IsTrue(first == second);
-            Assert.IsFalse(first != second);
-            Assert.IsTrue(second == first);
-            Assert.IsFalse(second != first);
+            Assert.That(first == second, Is.True);
+            Assert.That(first != second, Is.False);
+            Assert.That(second == first, Is.True);
+            Assert.That(second != first, Is.False);
         }
 
         [Test]

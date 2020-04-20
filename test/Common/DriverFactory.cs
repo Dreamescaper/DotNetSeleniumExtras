@@ -31,7 +31,6 @@ namespace SeleniumExtras.Environment
         public IWebDriver CreateDriver(Type driverType)
         {
             List<Type> constructorArgTypeList = new List<Type>();
-            IWebDriver driver = null;
             if (typeof(ChromeDriver).IsAssignableFrom(driverType))
             {
                 ChromeDriverService service = ChromeDriverService.CreateDefaultService(this.DriverServicePath);
@@ -68,8 +67,7 @@ namespace SeleniumExtras.Environment
                 return (IWebDriver)ctorInfo.Invoke(new object[] { service });
             }
 
-            driver = (IWebDriver)Activator.CreateInstance(driverType);
-            return driver;
+            return (IWebDriver)Activator.CreateInstance(driverType);
         }
     }
 }

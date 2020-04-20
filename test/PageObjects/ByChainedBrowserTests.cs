@@ -47,7 +47,7 @@ namespace SeleniumExtras.PageObjects
 
             var by = new ByChained(By.Name("NotFoundAtAll"));
                 
-            Assert.AreEqual(0, by.FindElements(driver).Count);
+            Assert.That(by.FindElements(driver).Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace SeleniumExtras.PageObjects
             driver.Navigate();
 
             var by = new ByChained(By.Name("div1"));
-            Assert.IsTrue(by.FindElement(driver).Displayed);
+            Assert.That(by.FindElement(driver).Displayed, Is.True);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace SeleniumExtras.PageObjects
             driver.Navigate();
 
             var by = new ByChained(By.Name("div1"));
-            Assert.AreEqual(4, by.FindElements(driver).Count);
+            Assert.That(by.FindElements(driver).Count, Is.EqualTo(4));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace SeleniumExtras.PageObjects
             driver.Navigate();
 
             var by = new ByChained(By.Name("classes"), By.CssSelector(".one"));
-            Assert.AreEqual("Find me", by.FindElement(driver).Text);
+            Assert.That(by.FindElement(driver).Text, Is.EqualTo("Find me"));
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace SeleniumExtras.PageObjects
             driver.Navigate();
 
             var by = new ByChained(By.Name("classes"), By.CssSelector(".one"));
-            Assert.AreEqual(2, by.FindElements(driver).Count);
+            Assert.That(by.FindElements(driver).Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace SeleniumExtras.PageObjects
             driver.Navigate();
 
             var by = new ByChained(By.Name("classes"), By.CssSelector(".NotFound"));
-            Assert.AreEqual(0, by.FindElements(driver).Count);
+            Assert.That(by.FindElements(driver).Count, Is.EqualTo(0));
         }
 
         [Test]

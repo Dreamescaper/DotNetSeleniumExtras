@@ -75,13 +75,12 @@ namespace SeleniumExtras
         protected T WaitFor<T>(Func<T> waitFunction, TimeSpan timeout, string timeoutMessage)
         {
             DateTime endTime = DateTime.Now.Add(timeout);
-            T value = default(T);
             Exception lastException = null;
             while (DateTime.Now < endTime)
             {
                 try
                 {
-                    value = waitFunction();
+                    var value = waitFunction();
                     if (typeof(T) == typeof(bool))
                     {
                         if ((bool)(object)value)

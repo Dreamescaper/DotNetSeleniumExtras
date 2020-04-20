@@ -35,10 +35,10 @@ namespace SeleniumExtras.PageObjects
         {
             var page = new Page();
 
-            Assert.Null(page.formElement);
+            Assert.That(page.formElement, Is.Null);
 
             PageFactory.InitElements(mockDriver.Object, page);
-            Assert.NotNull(page.formElement);
+            Assert.That(page.formElement, Is.Not.Null);
         }
 
         [Test]
@@ -46,8 +46,8 @@ namespace SeleniumExtras.PageObjects
         {
             Mock<IWebDriver> driver = new Mock<IWebDriver>();
             var page = PageFactory.InitElements<GenericFactoryPage>(driver.Object);
-            Assert.IsInstanceOf<GenericFactoryPage>(page);
-            Assert.NotNull(page.formElement);
+            Assert.That(page, Is.InstanceOf<GenericFactoryPage>());
+            Assert.That(page.formElement, Is.Not.Null);
         }
 
         [Test]
@@ -265,7 +265,7 @@ namespace SeleniumExtras.PageObjects
         [Test]
         public void CanUseGenericInitElementsWithWebDriverConstructor()
         {
-            WebDriverConstructorPage page = PageFactory.InitElements<WebDriverConstructorPage>(mockExplicitDriver.Object);
+            PageFactory.InitElements<WebDriverConstructorPage>(mockExplicitDriver.Object);
         }
 
         [Test]
@@ -431,7 +431,7 @@ namespace SeleniumExtras.PageObjects
         /// </summary>
         private static void AssertFoundElement(IWebElement element, string tagName)
         {
-            Assert.AreEqual(tagName, element.TagName.ToLower());
+            Assert.That(element.TagName.ToLower(), Is.EqualTo(tagName));
         }
 
         #endregion

@@ -41,7 +41,7 @@ namespace SeleniumExtras.PageObjects
             driver.Setup(_ => _.FindElements(by.Mechanism, by.Criteria)).Returns(elems12);
 
             ByChained byChained = new ByChained(by);
-            Assert.AreEqual(byChained.FindElement(driver.Object), elem1.Object);
+            Assert.That(elem1.Object, Is.EqualTo(byChained.FindElement(driver.Object)));
             driver.Verify(_ => _.FindElements(by.Mechanism, by.Criteria), Times.Once);
         }
 
@@ -55,7 +55,7 @@ namespace SeleniumExtras.PageObjects
             driver.Setup(_ => _.FindElements(by.Mechanism, by.Criteria)).Returns(elems12);
 
             ByChained byChained = new ByChained(by);
-            Assert.AreEqual(byChained.FindElements(driver.Object), elems12);
+            Assert.That(elems12, Is.EqualTo(byChained.FindElements(driver.Object)));
             driver.Verify(_ => _.FindElements(by.Mechanism, by.Criteria), Times.Once);
         }
 
@@ -210,8 +210,10 @@ namespace SeleniumExtras.PageObjects
         [Test]
         public void TestEquals()
         {
-            Assert.That(new ByChained(By.Id("cheese"), by2),
-                Is.EqualTo(new ByChained(By.Id("cheese"), by2)));
+            var actual = new ByChained(By.Id("cheese"), by2);
+            var expected = new ByChained(By.Id("cheese"), by2);
+
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }

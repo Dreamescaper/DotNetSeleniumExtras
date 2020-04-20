@@ -5,7 +5,6 @@ namespace SeleniumExtras.Environment
 {
     public class UrlBuilder
     {
-        private string protocol;
         private string port;
         private string securePort;
 
@@ -19,7 +18,6 @@ namespace SeleniumExtras.Environment
 
         public UrlBuilder(WebsiteConfig config)
         {
-            protocol = config.Protocol;
             HostName = config.HostName;
             port = config.Port;
             securePort = config.SecurePort;
@@ -40,34 +38,22 @@ namespace SeleniumExtras.Environment
 
         public string LocalWhereIs(string page)
         {
-            string location = string.Empty;
-            location = "http://localhost:" + port + "/" + Path + "/" + page;
-
-            return location;
+            return "http://localhost:" + port + "/" + Path + "/" + page;
         }
 
         public string WhereIs(string page)
         {
-            string location = string.Empty;
-            location = BaseUrl + Path + "/" + page;
-
-            return location;
+            return BaseUrl + Path + "/" + page;
         }
 
         public string WhereElseIs(string page)
         {
-            string location = string.Empty;
-            location = "http://" + AlternateHostName + ":" + port + "/" + Path + "/" + page;
-
-            return location;
+            return "http://" + AlternateHostName + ":" + port + "/" + Path + "/" + page;
         }
 
         public string WhereIsSecure(string page)
-        {
-            string location = string.Empty;
-            location = "https://" + HostName + ":" + securePort + "/" + Path + "/" + page;
-
-            return location;
+        { 
+            return "https://" + HostName + ":" + securePort + "/" + Path + "/" + page;
         }
     }
 }

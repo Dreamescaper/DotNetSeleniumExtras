@@ -49,7 +49,7 @@ namespace SeleniumExtras.PageObjects
             var byAll = new ByAll(by);
 
             // findElement
-            Assert.AreEqual(byAll.FindElement(driver.Object), elem1.Object);
+            Assert.That(elem1.Object, Is.EqualTo(byAll.FindElement(driver.Object)));
             //findElements
             Assert.That(byAll.FindElements(driver.Object), Is.EqualTo(elems12));
 

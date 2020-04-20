@@ -34,7 +34,7 @@ namespace SeleniumExtras.PageObjects
 
             driver.Navigate().Refresh();
 
-            Assert.True(page.formElement.Displayed);
+            Assert.That(page.formElement.Displayed, Is.True);
         }
 
         [Test]
@@ -47,9 +47,9 @@ namespace SeleniumExtras.PageObjects
 
             var expectedElement = driver.FindElement(By.Name("someForm"));
 
-            Assert.True(page.formElement.Equals(expectedElement));
-            Assert.True(expectedElement.Equals(page.formElement));
-            Assert.AreEqual(expectedElement.GetHashCode(), page.formElement.GetHashCode());
+            Assert.That(page.formElement, Is.EqualTo(expectedElement));
+            Assert.That(expectedElement, Is.EqualTo(page.formElement));
+            Assert.That(page.formElement.GetHashCode(), Is.EqualTo(expectedElement.GetHashCode()));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace SeleniumExtras.PageObjects
 
             var tagName = (string)((IJavaScriptExecutor)driver).ExecuteScript("return arguments[0].tagName", page.formElement);
 
-            Assert.AreEqual("form", tagName.ToLower());
+            Assert.That(tagName.ToLower(), Is.EqualTo("form"));
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace SeleniumExtras.PageObjects
             actions.MoveToElement(page.MenuLink).Perform();
 
             IWebElement item = driver.FindElement(By.Id("item1"));
-            Assert.AreEqual("Item 1", item.Text);
+            Assert.That(item.Text, Is.EqualTo("Item 1"));
         }
 
         [Test]
@@ -101,8 +101,8 @@ namespace SeleniumExtras.PageObjects
             driver.Url = xhtmlTestPage;
             var page = new PageFactoryBrowserTest.LinksPage();
             PageFactory.InitElements(driver, page);
-            Assert.AreEqual(12, page.AllLinks.Count);
-            Assert.AreEqual("Open new window", page.AllLinks[0].Text.Trim());
+            Assert.That(page.AllLinks.Count, Is.EqualTo(12));
+            Assert.That(page.AllLinks[0].Text.Trim(), Is.EqualTo("Open new window"));
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace SeleniumExtras.PageObjects
             driver.Url = xhtmlTestPage;
             var page = new PageFactoryBrowserTest.Page();
             PageFactory.InitElements(driver, page);
-            Assert.AreEqual("I'm a child", page.NestedElement.Text.Trim());
+            Assert.That(page.NestedElement.Text.Trim(), Is.EqualTo("I'm a child"));
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace SeleniumExtras.PageObjects
             driver.Url = xhtmlTestPage;
             var page = new PageFactoryBrowserTest.Page();
             PageFactory.InitElements(driver, page);
-            Assert.True(page.ByAllElement.Displayed);
+            Assert.That(page.ByAllElement.Displayed, Is.True);
         }
 
         [Test]
