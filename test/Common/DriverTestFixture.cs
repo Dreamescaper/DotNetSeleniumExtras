@@ -26,8 +26,9 @@ namespace SeleniumExtras
         {
             get
             {
-                IHasCapabilities capabilitiesDriver = driver as IHasCapabilities;
-                if (capabilitiesDriver != null && capabilitiesDriver.Capabilities.HasCapability(CapabilityType.HasNativeEvents) && (bool)capabilitiesDriver.Capabilities.GetCapability(CapabilityType.HasNativeEvents))
+                if (driver is IHasCapabilities capabilitiesDriver 
+                    && capabilitiesDriver.Capabilities.HasCapability(CapabilityType.HasNativeEvents) 
+                    && (bool)capabilitiesDriver.Capabilities.GetCapability(CapabilityType.HasNativeEvents))
                 {
                     return true;
                 }
@@ -108,7 +109,7 @@ namespace SeleniumExtras
             }
 
             Assert.Fail("Condition timed out: " + timeoutMessage);
-            return default(T);
+            return default;
         }
     }
 }

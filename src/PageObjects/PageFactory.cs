@@ -92,8 +92,7 @@ namespace SeleniumExtras.PageObjects
                 throw new ArgumentNullException(nameof(locator), "locator cannot be null");
             }
 
-            IWebDriver? driver = locator.SearchContext as IWebDriver;
-            if (driver == null)
+            if (!(locator.SearchContext is IWebDriver driver))
             {
                 throw new ArgumentException("The search context of the element locator must implement IWebDriver", nameof(locator));
             }
