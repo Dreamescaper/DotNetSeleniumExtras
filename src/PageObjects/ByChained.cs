@@ -89,7 +89,14 @@ namespace SeleniumExtras.PageObjects
                 {
                     foreach (IWebElement elem in elems)
                     {
-                        newElems.AddRange(elem.FindElements(by));
+                        try
+                        {
+                            newElems.AddRange(elem.FindElements(by));
+                        }
+                        catch (StaleElementReferenceException)
+                        {
+                            // Elements has gone stale during search.
+                        }
                     }
                 }
 

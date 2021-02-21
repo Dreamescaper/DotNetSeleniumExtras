@@ -215,5 +215,28 @@ namespace SeleniumExtras.PageObjects
 
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void ShouldNotThrowIfElementBecomesStale()
+        {
+            Mock<IAllDriver> driver = new Mock<IAllDriver>();
+
+            Mock<IAllElement> elem1 = new Mock<IAllElement>();
+            Mock<IAllElement> elem2 = new Mock<IAllElement>();
+            Mock<IAllElement> elem3 = new Mock<IAllElement>();
+            Mock<IAllElement> elem4 = new Mock<IAllElement>();
+            var elems12 = new List<IWebElement>() { elem1.Object, elem2.Object }.AsReadOnly();
+            var elems34 = new List<IWebElement>() { elem3.Object, elem4.Object }.AsReadOnly();
+
+            driver.Setup(_ => _.FindElements(by.Mechanism, by.Criteria)).Returns(elems12);
+            elem1.Setup(_ => _.FindElements(by2)).Throws(new StaleElementReferenceException());
+            elem2.Setup(_ => _.FindElements(by2)).Returns(elems34);
+
+            ByChained byChained = new ByChained(by, by2);
+            Assert.That(byChained.FindElements(driver.Object), Is.EquivalentTo(elems34));
+            driver.Verify(_ => _.FindElements(by.Mechanism, by.Criteria), Times.Once);
+            elem1.Verify(_ => _.FindElements(by2), Times.Once);
+            elem2.Verify(_ => _.FindElements(by2), Times.Once);
+        }
     }
 }
